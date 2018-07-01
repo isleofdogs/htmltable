@@ -88,7 +88,8 @@ class StructuredTable:
         slices = {
            'head': slice(struct['sr'], struct['sr']+struct['hr']),
            'colhead': slice(struct['sc'], struct['sc']+struct['hc']),
-           'startleft': slice(struct['sc']+struct['hc'],None)
+           'startleft': slice(struct['sc']+struct['hc'],None),
+           'starttop': slice(struct['sr']+struct['hr'],None)
         }
         return slices
     @property
