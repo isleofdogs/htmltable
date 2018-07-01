@@ -1,0 +1,17 @@
+>>> from htmltable import Table
+>>> html = '<table><tr><td>1</td><td>2</td></tr><tr><td>3</td><td>4</td></tr></table>'
+>>> table = Table(html)
+>>> table._cells #doctest: +NORMALIZE_WHITESPACE
+[Cell(ri=0, ci=0, rs=1, cs=1, text='1'),
+ Cell(ri=0, ci=1, rs=1, cs=1, text='2'),
+ Cell(ri=1, ci=0, rs=1, cs=1, text='3'),
+ Cell(ri=1, ci=1, rs=1, cs=1, text='4')]
+>>> table._dict #doctest: +NORMALIZE_WHITESPACE
+{0 : {0 : '1', 1 : '2'},
+ 1 : {0 : '3', 1 : '4'}}
+>>> table[0]
+['1', '2']
+>>> table #doctest: +NORMALIZE_WHITESPACE
+[[1, 2],
+ [3, 4]]
+
