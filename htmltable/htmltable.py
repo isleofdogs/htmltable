@@ -81,7 +81,16 @@ class StructuredTable:
             'hrj': ' ',
             'hcj': ' '
         }
-        
+        self._slices = self._make_slices()
+
+    def _make_slices(self):
+        struct = self._struct
+        slices = {
+           'head': slice(struct['sr'], struct['sr']+struct['hr']),
+           'colhead': slice(struct['sc'], struct['sc']+struct['hc']),
+           'startleft': slice(struct['sc']+struct['hc'],None)
+        }
+        return slices
     @property
     def struct(self):
         return self._struct
@@ -92,13 +101,10 @@ class StructuredTable:
 
     @property
     def head(self):
-        start = self._struct['sr']
-        stop = self._struct['sr'] + self._struct['hr']
-        rows = self.table[start:stop]
+        rows = self.table[self._slices['head']]
         joiner = self._struct['hrj']
         processed = [joiner.join(items) for items in zip(*rows)]
-        start_left = self._struct['sc'] + self._struct['hc']
-        return processed[start_left:]
+        return processed[self._slices['startleft']]
         
     def __iter__(self):
         return iter(self.table)
