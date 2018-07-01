@@ -74,9 +74,10 @@ class StructuredTable(Table):
 
     def __init__(self, html):
         super(StructuredTable, self).__init__(html)
+        self.struct = dict(self.__class__._default_struct)
 
     def _slices(self):
-        struct = self._struct
+        struct = self.struct
         slices = {
            'head': slice(struct['sr'], struct['sr']+struct['hr']),
            'colhead': slice(struct['sc'], struct['sc']+struct['hc']),
@@ -85,17 +86,9 @@ class StructuredTable(Table):
         }
         return slices
 
-    @property
-    def struct(self):
-        return self._struct
-
-    @struct.setter
-    def struct(self, value):
-        self._struct.update(value)
-
     def _head(self, head_slice):
         rows = self[head_slice]
-        joiner = self._struct['hrj']
+        joiner = self.struct['hrj']
         processed = [joiner.join(items) for items in zip(*rows)]
         return processed
 
@@ -103,7 +96,7 @@ class StructuredTable(Table):
         slices = self._slices()
         fixed_params = {
             'colhead_slice': slices['colhead'],
-            'joiner': self._struct['hcj'],
+            'joiner': self.struct['hcj'],
             'startleft_slice': slices['startleft']
         }
         simple_row = partial(_simple_row, **fixed_params)
