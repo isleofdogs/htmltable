@@ -11,6 +11,8 @@
  1 : {0 : '3', 1 : '4'}}
 >>> table[0]
 ['1', '2']
+>>> len(table)
+2
 >>> table #doctest: +NORMALIZE_WHITESPACE
 [[1, 2],
  [3, 4]]

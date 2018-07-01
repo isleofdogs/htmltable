@@ -57,7 +57,7 @@ class Table(MutableSequence):
         pass
 
     def __len__(self):
-        pass
+        return len(self._dict)
 
     def insert(self, index, value):
         pass
