@@ -1,6 +1,7 @@
 from collections.abc import MutableSequence
 from collections import namedtuple, defaultdict
 from bs4 import BeautifulSoup
+from functools import partial
 
 Cell = namedtuple('Cell', ['ri', 'ci', 'rs', 'cs', 'text'])
 
@@ -106,4 +107,25 @@ class StructuredTable(Table):
         rows = self[slices['head']]
         joiner = self._struct['hrj']
         processed = [joiner.join(items) for items in zip(*rows)]
-        return processed[slices['startleft']]
+        return processed
+
+    def simplify(self):
+        slices = self._slices()
+        fixed_params = {
+            'colhead_slice': slices['colhead'],
+            'joiner': self._struct['hcj'],
+            'startleft_slice': slices['startleft']
+        }
+        simple_row = partial(_simple_row, **fixed_params)
+        simple_table = [self.head]
+        simple_table.extend(simple_row(row) for row in self[slices['starttop']])
+        return simple_table
+
+    def to_dict():
+        pass
+
+def _simple_row(row, joiner, colhead_slice, startleft_slice):
+    colhead = joiner.join(row[colhead_slice])
+    simple = [colhead]
+    simple.extend(row[startleft_slice])
+    return simple

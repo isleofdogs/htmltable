@@ -21,5 +21,9 @@
  ['C', '1', '2'],
  ['D', '3', '4']]
 >>> table.head
-['A', 'B']
+['#', 'A', 'B']
+>>> table.simplify() #doctest: +NORMALIZE_WHITESPACE
+[['#', 'A', 'B'],
+ ['C', '1', '2'],
+ ['D', '3', '4']]
 >>> table.split(skip=0, skip_cols=0, head=1, head_cols=1)
