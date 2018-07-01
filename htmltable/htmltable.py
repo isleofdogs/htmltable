@@ -63,16 +63,17 @@ class Table(Sequence):
         return len(self._rows)
 
 class StructuredTable(Table):
+    _default_struct = {
+        'sr': 0,
+        'sc': 0,
+        'hr': 1,
+        'hc': 1,
+        'hrj': ' ',
+        'hcj': ' '
+    }
+
     def __init__(self, html):
         super(StructuredTable, self).__init__(html)
-        self._struct = {
-            'sr': 0,
-            'sc': 0,
-            'hr': 1,
-            'hc': 1,
-            'hrj': ' ',
-            'hcj': ' '
-        }
 
     def _slices(self):
         struct = self._struct
