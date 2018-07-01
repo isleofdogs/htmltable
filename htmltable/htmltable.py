@@ -46,7 +46,10 @@ class Table(MutableSequence):
                 yield ri, ci
 
     def __getitem__(self, index):
-        row_dict = self._dict[index]
+        try:
+            row_dict = self._dict[index]
+        except KeyError:
+            raise IndexError('Table index out of range')
         row = [v for _,v in sorted(row_dict.items())]
         return row
 
