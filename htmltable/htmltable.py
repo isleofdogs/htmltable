@@ -121,9 +121,17 @@ class StructuredTable(Table):
         simple_table.extend(simple_row(row) for row in self[slices['starttop']])
         return simple_table
 
-    def to_dict():
-        pass
-
+    def to_dict(self, row_outer_key=False):
+        rows = self.simplify()
+        if row_outer_key:
+            rows = list(zip(*rows))
+        header = rows[0][1:]
+        _dict = {
+            row[0]: dict(zip(header, row[1:]))
+            for row in rows[1:]
+        }
+        return _dict
+            
 def _simple_row(row, joiner, colhead_slice, startleft_slice):
     colhead = joiner.join(row[colhead_slice])
     simple = [colhead]

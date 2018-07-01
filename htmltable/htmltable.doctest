@@ -26,4 +26,9 @@
 [['#', 'A', 'B'],
  ['C', '1', '2'],
  ['D', '3', '4']]
->>> table.split(skip=0, skip_cols=0, head=1, head_cols=1)
+ >>> table.to_dict() #doctest: +NORMALIZE_WHITESPACE
+ {'C': {'A': '1', 'B': '2'},
+  'D': {'A': '3', 'B': '4'}}
+ >>> table.to_dict(row_outer_key=True) #doctest: +NORMALIZE_WHITESPACE
+ {'A': {'C': '1', 'D': '3'},
+  'B': {'C': '2', 'D': '4'}}
