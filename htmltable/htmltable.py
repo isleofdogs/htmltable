@@ -70,7 +70,7 @@ class Table(MutableSequence):
     def insert(self, index, value):
         pass
 
-def StructuredTable(Table):
+class StructuredTable:
     def __init__(self, html):
         self.table = Table(html)
         self._struct = {
@@ -83,10 +83,22 @@ def StructuredTable(Table):
         }
         
     @property
-    def structure(self):
+    def struct(self):
         return self._struct
 
-    @property.setter
-    def structure(self, value):
+    @struct.setter
+    def struct(self, value):
         self._struct.update(value)
+
+    @property
+    def head(self):
+        start = self._struct['sr']
+        stop = self._struct['sr'] + self._struct['hr']
+        rows = self.table[start:stop]
+        joiner = self._struct['hrj']
+        processed = [joiner.join(items) for items in zip(*rows)]
+        start_left = self._struct['sc'] + self._struct['hc']
+        return processed[start_left:]
         
+    def __iter__(self):
+        return iter(self.table)
