@@ -1,11 +1,11 @@
-from collections.abc import MutableSequence
+from collections.abc import Sequence
 from collections import namedtuple, defaultdict
 from bs4 import BeautifulSoup
 from functools import partial
 
 Cell = namedtuple('Cell', ['ri', 'ci', 'rs', 'cs', 'text'])
 
-class Table(MutableSequence):
+class Table(Sequence):
     def __init__(self, html):
         self.html = html
         self._soup = BeautifulSoup(html, 'html.parser')
@@ -59,17 +59,8 @@ class Table(MutableSequence):
     def __iter__(self):
         return iter(self._rows)
         
-    def __setitem__(self, index, value):
-        pass
-
-    def __delitem__(self, index):
-        pass
-
     def __len__(self):
         return len(self._rows)
-
-    def insert(self, index, value):
-        pass
 
 class StructuredTable(Table):
     def __init__(self, html):
@@ -101,10 +92,8 @@ class StructuredTable(Table):
     def struct(self, value):
         self._struct.update(value)
 
-    @property
-    def head(self):
-        slices = self._slices()
-        rows = self[slices['head']]
+    def _head(self, head_slice):
+        rows = self[head_slice]
         joiner = self._struct['hrj']
         processed = [joiner.join(items) for items in zip(*rows)]
         return processed
@@ -117,7 +106,8 @@ class StructuredTable(Table):
             'startleft_slice': slices['startleft']
         }
         simple_row = partial(_simple_row, **fixed_params)
-        simple_table = [self.head]
+        simple_heading = simple_row(self._head(slices['head']))
+        simple_table = [simple_heading]
         simple_table.extend(simple_row(row) for row in self[slices['starttop']])
         return simple_table
 

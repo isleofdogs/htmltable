@@ -20,8 +20,6 @@
 [['#', 'A', 'B'],
  ['C', '1', '2'],
  ['D', '3', '4']]
->>> table.head
-['#', 'A', 'B']
 >>> table.simplify() #doctest: +NORMALIZE_WHITESPACE
 [['#', 'A', 'B'],
  ['C', '1', '2'],
