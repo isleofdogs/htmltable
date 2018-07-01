@@ -8,8 +8,8 @@ class Table(MutableSequence):
     def __init__(self, html):
         self.html = html
         self._soup = BeautifulSoup(html, 'html.parser')
+        self._dict = self._table_to_dict()
 
-    @property
     def _cells(self):
         cells = [
             Cell(
@@ -24,10 +24,9 @@ class Table(MutableSequence):
         ]
         return cells
 
-    @property
-    def _dict(self):
+    def _table_to_dict(self):
         _dict = defaultdict(dict)
-        for cell in self._cells:
+        for cell in self._cells():
             insertion_indices = Table._find_insertion_indices(cell, _dict)
             for ri, ci in insertion_indices: 
                 _dict[ri][ci] = cell.text
