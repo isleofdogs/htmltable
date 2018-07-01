@@ -8,7 +8,15 @@ class Table(MutableSequence):
     def __init__(self, html):
         self.html = html
         self._soup = BeautifulSoup(html, 'html.parser')
-        self._dict = self._table_to_dict()
+        self._rows = self._make_rows()
+
+    def _make_rows(self):
+        _dict = self._table_to_dict()
+        rows = [
+            [col for _,col in sorted(row.items())]
+            for _,row in sorted(_dict.items())
+        ]
+        return rows
 
     def _cells(self):
         cells = [
@@ -45,13 +53,11 @@ class Table(MutableSequence):
                 yield ri, ci
 
     def __getitem__(self, index):
-        try:
-            row_dict = self._dict[index]
-        except KeyError:
-            raise IndexError('Table index out of range')
-        row = [v for _,v in sorted(row_dict.items())]
-        return row
+        return self._rows[index]
 
+    def __iter__(self):
+        return iter(self._rows)
+        
     def __setitem__(self, index, value):
         pass
 
@@ -59,7 +65,28 @@ class Table(MutableSequence):
         pass
 
     def __len__(self):
-        return len(self._dict)
+        return len(self._rows)
 
     def insert(self, index, value):
         pass
+
+def StructuredTable(Table):
+    def __init__(self, html):
+        self.table = Table(html)
+        self._struct = {
+            'sr': 0,
+            'sc': 0,
+            'hr': 1,
+            'hc': 1,
+            'hrj': ' ',
+            'hcj': ' '
+        }
+        
+    @property
+    def structure(self):
+        return self._struct
+
+    @property.setter
+    def structure(self, value):
+        self._struct.update(value)
+        

@@ -16,4 +16,10 @@
 >>> list(table) #doctest: +NORMALIZE_WHITESPACE
 [['1', '2'],
  ['3', '4']]
-
+>>> html = '<table><tr><td>#</td><th>A</th><th>B</th></tr><tr><td>C</td><td>1</td><td>2</td></tr><tr><td>D</td><td>3</td><td>4</td></tr></table>'
+>>> table = Table(html)
+>>> list(table) #doctest: +NORMALIZE_WHITESPACE
+[['#', 'A', 'B'],
+ ['C', '1', '2'],
+ ['D', '3', '4']]
+>>> table.split(skip=0, skip_cols=0, head=1, head_cols=1)
