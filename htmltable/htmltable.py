@@ -70,9 +70,9 @@ class Table(MutableSequence):
     def insert(self, index, value):
         pass
 
-class StructuredTable:
+class StructuredTable(Table):
     def __init__(self, html):
-        self.table = Table(html)
+        super(StructuredTable, self).__init__(html)
         self._struct = {
             'sr': 0,
             'sc': 0,
@@ -81,9 +81,8 @@ class StructuredTable:
             'hrj': ' ',
             'hcj': ' '
         }
-        self._slices = self._make_slices()
 
-    def _make_slices(self):
+    def _slices(self):
         struct = self._struct
         slices = {
            'head': slice(struct['sr'], struct['sr']+struct['hr']),
@@ -92,6 +91,7 @@ class StructuredTable:
            'starttop': slice(struct['sr']+struct['hr'],None)
         }
         return slices
+
     @property
     def struct(self):
         return self._struct
@@ -102,10 +102,8 @@ class StructuredTable:
 
     @property
     def head(self):
-        rows = self.table[self._slices['head']]
+        slices = self._slices()
+        rows = self[slices['head']]
         joiner = self._struct['hrj']
         processed = [joiner.join(items) for items in zip(*rows)]
-        return processed[self._slices['startleft']]
-        
-    def __iter__(self):
-        return iter(self.table)
+        return processed[slices['startleft']]

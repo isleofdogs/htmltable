@@ -6,9 +6,6 @@
  Cell(ri=0, ci=1, rs=1, cs=1, text='2'),
  Cell(ri=1, ci=0, rs=1, cs=1, text='3'),
  Cell(ri=1, ci=1, rs=1, cs=1, text='4')]
->>> table._dict #doctest: +NORMALIZE_WHITESPACE
-{0: {0: '1', 1: '2'},
- 1: {0: '3', 1: '4'}}
 >>> table[0]
 ['1', '2']
 >>> len(table)
